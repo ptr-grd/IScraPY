@@ -1,6 +1,6 @@
 ## Инстаграм-комментарии
 
-Загрузить код можно: git clone https://github.com/ptr-grd/IScrapPy-1.0.git.
+Загрузить код можно: git clone https://github.com/ptr-grd/IScrapPy.git.
 Или скачав zip-архив с файлами
 
 ### 1. Установка
