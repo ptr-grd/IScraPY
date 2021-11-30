@@ -12,6 +12,8 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 from fake_useragent import UserAgent
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 
 # ===== GENERAL-LOGIC ===== #
@@ -104,7 +106,7 @@ def scrolling_comments(driver):
 		time.sleep(1)
 
 		loading_comm_btn = driver.find_element(By.XPATH, config.elements["load_comm_btn"]).click()
-		time.sleep(1)
+		wait_comm_btn = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, config.elements["load_comm_btn"])))
 
 # ЗАПИСЬ. Запись полученных данных в csv-файл #
 def write_csv(data):
