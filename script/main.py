@@ -130,7 +130,7 @@ def scrolling_comments(driver):
 		action_scroll.move_to_element(scroll_target_element).perform()
 		
 		loading_comm_btn = driver.find_element(By.XPATH, config.elements["load_comm_btn"]).click()
-		wait_comm_btn = WebDriverWait(driver, 25).until(EC.presence_of_element_located((By.XPATH, config.elements["load_comm_btn"])))
+		wait_comm_btn = WebDriverWait(driver, 60).until(EC.presence_of_element_located((By.XPATH, config.elements["load_comm_btn"])))
 		
 	print(datetime.now().strftime("%H:%M:%S"), f"| [INFO] Конец сбора комментариев")
 
