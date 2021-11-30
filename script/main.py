@@ -21,10 +21,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 # ПОЛЬЗОВАТЕЛЬ. Взаимодействие и настройка скрипта
 def user_config():
 
-	# ПОЛЬЗОВАТЕЛЬ. Любое кол-во процессов в пределах допустимого
 	print(datetime.now().strftime("%H:%M:%S"), "| [INFO] Запуск скрипта")
-	
-	# ВЫВОД. Вывод настроек текущей конфигурации скрипта
 	bg_mode = "Включен" if config.BACKGROUND_MODE else "Выключен"
 	ua_mode = "Включен" if config.FAKE_USER_AGENT else "Выключен"
 
@@ -84,11 +81,9 @@ def init_driver(link):
 # КОММЕНТАРИИ. Скроллинг, сбор html-данных
 def scrolling_comments(driver):
 
-	# Определяем элемент к которому будем перемещаться
 	scroll_target_element = driver.find_element(By.XPATH, config.elements["scroll"])
 	action_scroll = ActionChains(driver)
 
-	# Проверка наличия элемента на сайте
 	def check_item(xpath: str) -> bool:
 		return len(driver.find_elements(By.XPATH, xpath)) > 0
 
@@ -118,7 +113,6 @@ def write_csv(data):
 			fieldnames = names)
 		file.writeheader()
 
-		# Перебираем пользователей в общем словаре
 		for item in data.items():
 			
 			one_user_list = {}
@@ -135,7 +129,6 @@ def general_parsing():
 
 	data = {}
 
-	# ПАРСИНГ. Перебираем каждый комментарий в отдельности и извлекаем данные
 	for index, comment in enumerate(comments):
 
 		nick = comment.find("a", {'class': 'sqdOP'}).text
