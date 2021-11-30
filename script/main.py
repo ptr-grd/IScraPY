@@ -101,7 +101,7 @@ def scrolling_comments(driver):
 		time.sleep(1)
 
 		loading_comm_btn = driver.find_element(By.XPATH, config.elements["load_comm_btn"]).click()
-		wait_comm_btn = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, config.elements["load_comm_btn"])))
+		wait_comm_btn = WebDriverWait(driver, 15).until(EC.presence_of_element_located((By.XPATH, config.elements["load_comm_btn"])))
 
 # ЗАПИСЬ. Запись полученных данных в csv-файл #
 def write_csv(data):
