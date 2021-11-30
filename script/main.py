@@ -78,6 +78,23 @@ def init_driver(link):
 
 	return driver
 
+# ЗАПИСЬ. Запись полученных данных в csv-файл #
+def write_csv(data):
+	
+	with open("../data/data.csv", mode='w', encoding="utf-8") as csv_file:
+		
+		names = ["Никнейм", "Комментарий"]
+		file = csv.DictWriter(csv_file, delimiter = ",", lineterminator = "\r",
+			fieldnames = names)
+		file.writeheader()
+
+		for item in data.items():
+			
+			one_user_list = {}
+			one_user_list[0] = item[0]
+			one_user_list[1] = item[1]
+			file.writerow({"Никнейм": one_user_list[0], "Комментарий": one_user_list[1]})
+
 # КОММЕНТАРИИ. Скроллинг, сбор html-данных
 def scrolling_comments(driver):
 
@@ -96,48 +113,29 @@ def scrolling_comments(driver):
 
 		if not check_load_comm_btn:
 		 	break
+			
+		soup = BeautifulSoup(driver.page_source, "html.parser")
+		comments = soup.find_all("ul", {"class": "Mr508"})
+
+		data = {}
+
+		for index, comment in enumerate(comments):
+
+			nick = comment.find("a", {'class': 'sqdOP'}).text
+			text = comment.find("span", {'class': ""}).text
+
+			data[nick] = text
+			write_csv(data)
 
 		action_scroll.move_to_element(scroll_target_element).perform()
 		time.sleep(1)
 
 		loading_comm_btn = driver.find_element(By.XPATH, config.elements["load_comm_btn"]).click()
-		wait_comm_btn = WebDriverWait(driver, 15).until(EC.presence_of_element_located((By.XPATH, config.elements["load_comm_btn"])))
-
-# ЗАПИСЬ. Запись полученных данных в csv-файл #
-def write_csv(data):
-	
-	with open("../data/data.csv", mode='w', encoding="utf-8") as csv_file:
+		wait_comm_btn = WebDriverWait(driver, 25).until(EC.presence_of_element_located((By.XPATH, config.elements["load_comm_btn"])))
 		
-		names = ["Никнейм", "Комментарий"]
-		file = csv.DictWriter(csv_file, delimiter = ",", lineterminator = "\r",
-			fieldnames = names)
-		file.writeheader()
-
-		for item in data.items():
-			
-			one_user_list = {}
-			one_user_list[0] = item[0]
-			one_user_list[1] = item[1]
-			file.writerow({"Никнейм": one_user_list[0], "Комментарий": one_user_list[1]})
-
-# ПАРСИНГ. Общий анализ всего полученного кода страницы
-def general_parsing():
-
-	soup = BeautifulSoup(driver.page_source, "html.parser")
-	comments = soup.find_all("ul", {"class": "Mr508"})
 	print(datetime.now().strftime("%H:%M:%S"), f"| [INFO] Конец сбора комментариев")
 
-	data = {}
-
-	for index, comment in enumerate(comments):
-
-		nick = comment.find("a", {'class': 'sqdOP'}).text
-		text = comment.find("span", {'class': ""}).text
-
-		data[nick] = text
-		write_csv(data)
-
-
+	
 if __name__ == "__main__":
 
 	with open("../link.txt", "r") as file:
@@ -148,7 +146,6 @@ if __name__ == "__main__":
 	user_config()
 	driver = init_driver(target_link)
 	scrolling_comments(driver)
-	general_parsing()
 
 	end_time = datetime.now()
 	driver.quit()
