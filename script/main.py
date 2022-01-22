@@ -63,6 +63,9 @@ def init_driver(link):
 	print(datetime.now().strftime("%H:%M:%S"), "| [INFO] Запуск браузера")
 	driver.get('https://www.instagram.com')
 	time.sleep(3)
+	
+	# Прокси
+	options.add_argument(f'--proxy-server={config.PROXY}')
 
 	# КУКИ. Открытие сохраненных cookies
 	cookies = pickle.load(open("session.pkl", "rb"))
