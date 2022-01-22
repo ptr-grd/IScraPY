@@ -15,8 +15,12 @@ from selenium.webdriver.common.by import By
 
 authorization_link = 'https://www.instagram.com'
 
+options = webdriver.ChromeOptions()
+options.add_argument(f'--proxy-server={config.PROXY}')
+
 driver = webdriver.Chrome(
-	executable_path = config.path_driver)
+	executable_path = config.path_driver,
+	options=options)
 
 driver.get(authorization_link)
 time.sleep(3)
